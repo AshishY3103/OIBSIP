@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        display: inline-block;
+        align-self: center;
+        margin: 50px;
+        background-image: url("Bg1.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      
+      .container{
+        width:fit-content;
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        border :1px solid rgb(0, 0, 0);
+        border-radius: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.515);
+        transform: translate(-50%, -20%);
+        padding: 10px;
+        background-color: aliceblue;
+
+      }
+      input,
+      select,
+      button {
+        font-size: 16px;
+      }
+      button {
+        padding:5px;
+        background-color: dodgerblue;
+        color:white;
+        border: 1px solid rgb(0, 8, 255);
+        border-radius: 3px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      #result {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+    </style>
+    <title>Temperature Converter</title>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Temperature Converter</h2>
+
+      <label for="temperature">Temperature:</label>
+      <input
+        type="text"
+        id="temperature"
+        placeholder="Enter temperature"
+        oninput="validateInput(this.value)"
+      />
+
+      <label for="unit">Unit:</label>
+      <select id="unit">
+        <option value="celsius">Celsius</option>
+        <option value="fahrenheit">Fahrenheit</option>
+        <option value="kelvin">Kelvin</option>
+      </select>
+      <br />
+      <div id="result"></div>
+      <br />
+      <button onclick="convertTemperature()">Convert</button>
+    </div>
+
+    <script>
+      function validateInput(value) {
+        // Validate that the input is a number
+        if (isNaN(value)) {
+          alert("Please enter a valid number for temperature.");
+          document.getElementById("temperature").value = "";
+        }
+      }
+
+      function convertTemperature() {
+        // Get user input
+        var temperatureInput = document.getElementById("temperature").value;
+        var selectedUnit = document.getElementById("unit").value;
+        if (temperatureInput.length === 0) {
+          alert("Please enter a valid number for temperature.");
+          document.getElementById("temperature").value = "";
+        } else {
+          // Convert temperature
+          var convertedTemperature = new Object();
+          if (selectedUnit === "celsius") {
+            convertedTemperature["Fahrenheit"] =
+              (parseFloat(temperatureInput) * 9) / 5 + 32;
+            convertedTemperature["Kelvin"] =
+              parseFloat(temperatureInput) + 273.15;
+            displayResult(convertedTemperature);
+          } else if (selectedUnit === "fahrenheit") {
+            convertedTemperature["Celsius"] =
+              ((parseFloat(temperatureInput) - 32) * 5) / 9;
+            convertedTemperature["Kelvin"] =
+              parseFloat(convertedTemperature["Celsius"]) + 273.15;
+            displayResult(convertedTemperature);
+          } else if (selectedUnit === "kelvin") {
+            convertedTemperature["Celsius"] =
+              parseFloat(temperatureInput) - 273.15;
+            convertedTemperature["Fahrenheit"] =
+              (parseFloat(convertedTemperature["Celsius"]) * 9) / 5 + 32;
+            displayResult(convertedTemperature);
+          }
+        }
+      }
+
+      function displayResult(temperature) {
+        // Display the result
+        var resultElement = document.getElementById("result");
+        output = "";
+        for (var key in temperature) {
+          var value = temperature[key];
+          output = output + value + "\u00B0 " + key + "<br>";
+        }
+        if (output != null) {
+          resultElement.innerHTML = output;
+        }
+      }
+    </script>
+  </body>
+</html>
